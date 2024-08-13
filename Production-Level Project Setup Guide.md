@@ -188,7 +188,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: 'src/index.html',
+      template: path.resolve(__dirname, '../src/index.html'),
       minify: {
         collapseWhitespace: true,
         removeComments: true,
@@ -197,6 +197,13 @@ module.exports = {
       },
     }),
   ],
+  resolve: {
+    extensions: ['.js', '.jsx'],
+    alias: {
+      'react': 'preact/compat',
+      'react-dom': 'preact/compat'
+    }
+  }
 };
 ```
 
