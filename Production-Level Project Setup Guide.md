@@ -231,7 +231,7 @@ module.exports = merge(common, {
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
@@ -256,7 +256,7 @@ module.exports = merge(common, {
   ],
   optimization: {
     minimizer: [
-      new OptimizeCssAssetsPlugin(),
+      new CssMinimizerPlugin(),
       new TerserPlugin({
         parallel: true,
       }),
