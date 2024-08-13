@@ -2,6 +2,8 @@
 
 This project demonstrates a production-ready Preact application with advanced responsive image handling. It includes optimizations, best practices, and features suitable for a production environment.
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/yourusername/preact-responsive-image-project)
+
 ## Project Overview
 
 The Preact Responsive Image Project showcases:
@@ -177,7 +179,13 @@ This flowchart shows the process from development to production, including:
 
 ## Deployment
 
-This project is set up for deployment on Vercel. To deploy:
+### Quick Deploy with Vercel
+
+Click the "Deploy with Vercel" button at the top of this README to deploy the project quickly with Vercel.
+
+### Manual Deployment
+
+This project is set up for deployment on Vercel. To deploy manually:
 
 1. Install Vercel CLI: `npm i -g vercel`
 2. Run: `vercel`
@@ -190,23 +198,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is licensed under the MIT License.
-```
-
-This README provides a comprehensive overview of the Preact Responsive Image Project, including:
-
-1. Project overview and features
-2. Project structure
-3. Setup instructions
-4. Usage guide for the ResponsiveImage component
-5. A detailed flowchart of the project workflow
-6. Available scripts
-7. Deployment instructions
-8. Information on contributing and licensing
-
-To use this in your GitHub repository:
-
-1. Create a new file named `README.md` in the root of your repository
-2. Copy and paste the entire content of this artifact into the file
-3. Commit and push the changes
-
-This will provide a thorough introduction to your project for anyone visiting your GitHub repository. Remember to replace "yourusername" with your actual GitHub username in the clone URL, and update any other placeholder information as needed.
