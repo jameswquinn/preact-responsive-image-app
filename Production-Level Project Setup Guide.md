@@ -59,34 +59,34 @@ project-root/
     "deploy": "vercel"
   },
   "dependencies": {
-    "preact": "^10.5.13",
-    "preact-router": "^3.2.1"
+    "preact": "^10.11.3",
+    "preact-router": "^4.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/preset-env": "^7.14.2",
-    "@babel/plugin-transform-react-jsx": "^7.14.3",
-    "@testing-library/preact": "^2.0.1",
-    "babel-loader": "^8.2.2",
-    "clean-webpack-plugin": "^4.0.0-alpha.0",
-    "css-loader": "^5.2.6",
-    "dotenv-webpack": "^7.0.3",
-    "eslint": "^7.27.0",
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/plugin-transform-react-jsx": "^7.20.13",
+    "@testing-library/preact": "^3.2.3",
+    "babel-loader": "^9.1.2",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.7.3",
+    "css-minimizer-webpack-plugin": "^4.2.2",
+    "dotenv-webpack": "^8.0.1",
+    "eslint": "^8.33.0",
     "eslint-plugin-preact": "^0.1.2",
     "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^5.3.1",
-    "jest": "^27.0.4",
-    "mini-css-extract-plugin": "^1.6.0",
-    "optimize-css-assets-webpack-plugin": "^6.0.0",
-    "prettier": "^2.3.0",
-    "responsive-loader": "^2.3.0",
-    "sharp": "^0.28.3",
-    "style-loader": "^2.0.0",
-    "terser-webpack-plugin": "^5.1.3",
-    "webpack": "^5.38.1",
-    "webpack-cli": "^4.7.0",
-    "webpack-dev-server": "^3.11.2",
-    "webpack-merge": "^5.7.3"
+    "html-webpack-plugin": "^5.5.0",
+    "jest": "^29.4.1",
+    "mini-css-extract-plugin": "^2.7.2",
+    "prettier": "^2.8.3",
+    "responsive-loader": "^3.1.2",
+    "sharp": "^0.31.3",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.6",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1",
+    "webpack-merge": "^5.8.0"
   }
 }
 ```
