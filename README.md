@@ -67,9 +67,7 @@ project-root/
    npm install
    ```
 
-3. Set up environment variables:
-   - Copy `.env.example` to `.env.development` and `.env.production`
-   - Fill in the required environment variables in each file
+3. Set up environment variables (see Environment Variables section below).
 
 4. Place your source PNG images in the `public/images/` directory.
 
@@ -82,6 +80,46 @@ project-root/
    ```
    npm run build
    ```
+
+## Environment Variables
+
+This project uses environment variables for configuration. An `.env.example` file is provided in the root directory as a template.
+
+### Setting Up Environment Variables
+
+1. Copy the `.env.example` file and rename it to `.env.development` for your development environment:
+   ```
+   cp .env.example .env.development
+   ```
+
+2. Create another copy for your production environment:
+   ```
+   cp .env.example .env.production
+   ```
+
+3. Edit both `.env.development` and `.env.production` files and replace the placeholder values with your actual configuration values.
+
+4. Never commit these `.env` files to version control. They are already included in `.gitignore`.
+
+### Available Environment Variables
+
+- `APP_NAME`: Name of the application
+- `NODE_ENV`: Current environment (development/production)
+- `PORT`: Port number for the server
+- `MAX_IMAGE_SIZE`: Maximum allowed image size in bytes
+- `ALLOWED_IMAGE_TYPES`: Comma-separated list of allowed image file types
+- `VERCEL_API_TOKEN`: API token for Vercel deployments
+- `DB_HOST`, `DB_USER`, `DB_PASS`, `DB_NAME`: Database connection details (if applicable)
+- `REDIS_URL`: URL for Redis cache (if used)
+- `LOG_LEVEL`: Logging level (e.g., info, debug, error)
+- `ENABLE_WEBP_CONVERSION`: Feature flag for WebP conversion
+- `ENABLE_LAZY_LOADING`: Feature flag for image lazy loading
+- `GOOGLE_ANALYTICS_ID`: Google Analytics ID (if used)
+- `CDN_URL`: URL for Content Delivery Network (if used)
+- `JWT_SECRET`: Secret key for JWT authentication
+- `CORS_ORIGIN`: Allowed origin for CORS
+
+Refer to the `.env.example` file for a complete list of available environment variables and their descriptions.
 
 ## Usage
 
