@@ -4,17 +4,18 @@ This project demonstrates a production-ready Preact application with advanced re
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/jameswquinn/preact-responsive-image-app)
 
-
 ## Project Overview
 
 The Preact Responsive Image Project showcases:
 - Responsive image loading with WebP support and fallbacks
+- Intelligent handling of images with alpha channels
 - Webpack configuration for development and production
 - Code splitting and performance optimizations
 - Environment-specific configurations
 - Testing setup with Jest
 - Linting and formatting with ESLint and Prettier
 - Continuous Integration/Continuous Deployment (CI/CD) setup
+- Error boundaries for robust error handling
 
 ## Project Structure
 
@@ -57,8 +58,8 @@ project-root/
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/preact-responsive-image-project.git
-   cd preact-responsive-image-project
+   git clone https://github.com/jameswquinn/preact-responsive-image-app.git
+   cd preact-responsive-image-app
    ```
 
 2. Install dependencies:
@@ -87,7 +88,7 @@ project-root/
 To use the ResponsiveImage component in your Preact application:
 
 ```jsx
-import { ResponsiveImage } from './components/ResponsiveImage/ResponsiveImage';
+import ResponsiveImage from './components/ResponsiveImage/ResponsiveImage';
 
 const MyComponent = () => (
   <ResponsiveImage
@@ -97,6 +98,23 @@ const MyComponent = () => (
   />
 );
 ```
+
+## How It Works
+
+1. During the build process:
+   - WebP versions are generated for all images.
+   - PNG versions are generated only for images with an alpha channel.
+   - JPEG versions are generated for images without an alpha channel.
+   - Metadata JSON files are created for each image, storing information about the alpha channel.
+
+2. The ResponsiveImage component:
+   - Fetches the metadata for the image.
+   - Sets up the appropriate `srcSet` for WebP and fallback images.
+   - Uses an `img` tag with `srcSet` to provide both WebP and fallback versions, allowing the browser to choose the best format.
+
+3. Error handling:
+   - The component includes error handling for both image and metadata loading failures.
+   - An ErrorBoundary component in App.js catches any errors that occur during rendering.
 
 ## Project Workflow
 
@@ -160,15 +178,6 @@ graph TD
     AE --> AK[End]
 ```
 
-This flowchart shows the process from development to production, including:
-1. Development phase
-2. Local testing and quality checks
-3. Version control with GitHub
-4. CI/CD pipeline
-5. Build process and image optimization
-6. Deployment to Vercel
-7. Production monitoring and iteration
-
 ## Scripts
 
 - `npm start`: Start development server
@@ -196,6 +205,19 @@ This project is set up for deployment on Vercel. To deploy manually:
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
 ## License
 
 This project is licensed under the MIT License.
+
+## Acknowledgments
+
+- [Preact](https://preactjs.com/) for the lightweight React alternative
+- [Sharp](https://sharp.pixelplumbing.com/) for the high-performance image processing
+- [Webpack](https://webpack.js.org/) for bundling and build process
+- [Vercel](https://vercel.com/) for easy deployment options
