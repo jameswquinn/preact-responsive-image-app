@@ -14,29 +14,20 @@ project-root/
 │   │   └── App/
 │   │       ├── App.js
 │   │       └── App.test.js
-│   ├── utils/
-│   │   └── imageUtils.js
 │   ├── styles/
 │   │   └── global.css
 │   ├── index.js
 │   └── index.html
-├── public/
-│   └── images/
-│       └── example.png
 ├── config/
 │   ├── webpack.common.js
 │   ├── webpack.dev.js
 │   └── webpack.prod.js
-├── scripts/
-│   └── optimize-images.js
+├── public/
+│   └── images/
+│       └── example.png
 ├── package.json
 ├── vercel.json
-├── .gitignore
-├── .env.example
-├── .eslintrc.js
-├── .prettierrc
-├── jest.config.js
-└── README.md
+└── .gitignore
 ```
 
 ## Enhanced File Contents
