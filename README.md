@@ -118,65 +118,27 @@ const MyComponent = () => (
 
 ## Project Workflow
 
-The following flowchart illustrates the entire lifecycle of the Preact Responsive Image Project:
+The following flowchart illustrates a simplified version of the Preact Responsive Image Project lifecycle:
 
 ```mermaid
 graph TD
-    A[Start] --> B[Development]
-    B --> C[Place PNG in public/images/]
-    B --> D[Write Preact Components]
-    B --> E[Create/Update Tests]
-    
-    C & D & E --> F[Run Development Server]
-    F --> G{Linting and Formatting}
-    G -->|Pass| H[Local Testing]
-    G -->|Fail| I[Fix Linting/Formatting Issues]
-    I --> F
-    
-    H -->|Pass| J[Commit Changes]
-    H -->|Fail| K[Fix Failing Tests]
-    K --> F
-    
-    J --> L[Push to GitHub]
-    
-    L --> M{CI/CD Pipeline}
-    M --> N[Run Tests]
-    M --> O[Lint Code]
-    
-    N & O -->|Pass| P[Build Process]
-    N -->|Fail| Q[Fix Failing Tests]
-    O -->|Fail| R[Fix Linting Issues]
-    Q & R --> L
-    
-    P --> S[Webpack Build]
-    S --> T[Process Images]
-    T --> U[Generate WebP versions]
-    T --> V{Check for Alpha Channel}
-    V -->|Yes| W[Generate PNG versions]
-    V -->|No| X[Generate JPEG versions]
-    
-    U & W & X --> Y[Create metadata JSON]
-    Y --> Z[Optimize Assets]
-    Z --> AA[Bundle JS and CSS]
-    
-    AA --> AB[Production Build Output]
-    AB --> AC[Deploy to Vercel]
-    
-    AC --> AD[Run Post-Deployment Tests]
-    AD -->|Pass| AE[Production Release]
-    AD -->|Fail| AF[Rollback Deployment]
-    AF --> L
-    
-    AE --> AG[Monitor Performance]
-    AG --> AH[Gather User Feedback]
-    AH --> AI[Plan Next Iteration]
-    AI --> B
-    
-    AG -->|Performance Issues| AJ[Optimize]
-    AJ --> B
-    
-    AE --> AK[End]
+    A[Development] --> B[Local Testing]
+    B --> C[Push to GitHub]
+    C --> D[CI/CD Pipeline]
+    D --> E[Build Process]
+    E --> F[Image Processing]
+    F --> G[Deploy to Vercel]
+    G --> H[Production Release]
+    H --> I[Monitor & Feedback]
+    I --> A
 ```
+
+This simplified diagram shows the main stages of the development and deployment process. The actual workflow includes more detailed steps, such as:
+- Linting and formatting checks
+- Generating different image formats (WebP, PNG, JPEG) based on alpha channel presence
+- Creating metadata JSON files for images
+- Running post-deployment tests
+- Performance monitoring and optimization
 
 ## Scripts
 
