@@ -116,6 +116,33 @@ const MyComponent = () => (
    - The component includes error handling for both image and metadata loading failures.
    - An ErrorBoundary component in App.js catches any errors that occur during rendering.
 
+## Troubleshooting
+
+If you encounter the error "Failed to load image. Please try again later.", follow these steps:
+
+1. Ensure that you have placed your source PNG images in the `public/images/` directory.
+
+2. Check that the Webpack build process is generating the image assets and metadata correctly:
+   - After running `npm run build`, check the `dist/assets/images/` directory for generated image files.
+   - Look for metadata JSON files in `dist/assets/images/metadata/`.
+
+3. Verify that the image paths in your code match the actual file names:
+   ```jsx
+   <ResponsiveImage
+     src="your-actual-image-filename.png"
+     alt="Description of your image"
+     sizes="(max-width: 600px) 300px, (max-width: 1200px) 600px, 1200px"
+   />
+   ```
+
+4. Check the browser's developer tools (Network tab) to see if the image and metadata files are being requested correctly.
+
+5. If using a development server, ensure it's configured to serve the `dist` directory correctly.
+
+6. For production deployments, verify that all image assets and metadata files are being uploaded to your hosting service.
+
+If the issue persists, you may need to modify the ResponsiveImage component to provide more detailed error information. Update the `src/components/ResponsiveImage/ResponsiveImage.js` file with enhanced error logging and handling.
+
 ## Project Workflow
 
 The following flowchart illustrates a simplified version of the Preact Responsive Image Project lifecycle:
