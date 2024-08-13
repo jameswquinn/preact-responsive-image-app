@@ -1,36 +1,34 @@
-# Preact App with Responsive Images - Production-Level Setup Guide
+# Preact App with Responsive Images - Complete Setup Guide
 
-This guide provides a production-ready setup for a Preact application with advanced responsive image handling.
+This guide provides a comprehensive setup for a Preact application with responsive image handling using Webpack and Sharp.
 
-## Enhanced Project Structure
+## Project Structure
 
 ```
 project-root/
 ├── src/
 │   ├── components/
 │   │   ├── ResponsiveImage/
-│   │   │   ├── ResponsiveImage.js
-│   │   │   └── ResponsiveImage.test.js
+│   │   │   └── ResponsiveImage.js
 │   │   └── App/
-│   │       ├── App.js
-│   │       └── App.test.js
+│   │       └── App.js
 │   ├── styles/
 │   │   └── global.css
 │   ├── index.js
 │   └── index.html
+├── public/
+│   └── images/
+│       └── example.png
 ├── config/
 │   ├── webpack.common.js
 │   ├── webpack.dev.js
 │   └── webpack.prod.js
-├── public/
-│   └── images/
-│       └── example.png
 ├── package.json
 ├── vercel.json
 └── .gitignore
 ```
 
-## Enhanced File Contents
+## File Contents
 
 ### 1. package.json
 
@@ -43,10 +41,6 @@ project-root/
   "scripts": {
     "start": "webpack serve --config config/webpack.dev.js",
     "build": "webpack --config config/webpack.prod.js",
-    "test": "jest",
-    "lint": "eslint src/**/*.js",
-    "format": "prettier --write 'src/**/*.{js,css}'",
-    "optimize-images": "node scripts/optimize-images.js",
     "deploy": "vercel"
   },
   "dependencies": {
@@ -57,19 +51,14 @@ project-root/
     "@babel/core": "^7.22.10",
     "@babel/preset-env": "^7.22.10",
     "@babel/plugin-transform-react-jsx": "^7.22.5",
-    "@testing-library/preact": "^3.2.3",
     "babel-loader": "^9.1.3",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
     "dotenv-webpack": "^8.0.1",
-    "eslint": "^8.47.0",
-    "eslint-plugin-preact": "^0.1.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.3",
-    "jest": "^29.6.2",
     "mini-css-extract-plugin": "^2.7.6",
-    "prettier": "^3.0.1",
     "responsive-loader": "^3.1.2",
     "sharp": "^0.32.4",
     "style-loader": "^3.3.3",
@@ -283,17 +272,22 @@ module.exports = merge(common, {
 ```javascript
 import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
-import { loadImageMetadata } from '../../utils/imageUtils';
 
 const ResponsiveImage = ({ src, alt, sizes }) => {
   const [imageMeta, setImageMeta] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    loadImageMetadata(src)
+    fetch(`/assets/images/metadata/${src.replace(/\.[^/.]+$/, "")}.json`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to load image metadata');
+        }
+        return response.json();
+      })
       .then(setImageMeta)
       .catch(err => {
-        console.error('Failed to load image metadata:', err);
+        console.error('Error loading image metadata:', err);
         setError('Failed to load image. Please try again later.');
       });
   }, [src]);
@@ -318,6 +312,7 @@ const ResponsiveImage = ({ src, alt, sizes }) => {
       sizes={sizes}
       alt={alt}
       loading="lazy"
+      onError={() => setError('Failed to load image. Please try again later.')}
     />
   );
 };
@@ -325,148 +320,197 @@ const ResponsiveImage = ({ src, alt, sizes }) => {
 export default ResponsiveImage;
 ```
 
-### 6. src/utils/imageUtils.js
+### 6. src/components/App/App.js
 
 ```javascript
-export const loadImageMetadata = async (src) => {
-  try {
-    const response = await fetch(`/assets/images/metadata/${src.replace(/\.[^/.]+$/, "")}.json`);
-    if (!response.ok) throw new Error('Failed to load image metadata');
-    return await response.json();
-  } catch (error) {
-    console.error('Error loading image metadata:', error);
-    throw error;
-  }
-};
-```
-
-### 7. src/components/App/App.js
-
-```javascript
-import { h } from 'preact';
-import { Router } from 'preact-router';
+import { h, Component } from 'preact';
 import ResponsiveImage from '../ResponsiveImage/ResponsiveImage';
 
-const Home = () => (
-  <div>
-    <h1>Preact Responsive Image Demo</h1>
-    <ResponsiveImage
-      src="example.png"
-      alt="Example responsive image"
-      sizes="(max-width: 600px) 300px, (max-width: 1200px) 600px, 1200px"
-    />
-  </div>
-);
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children;
+  }
+}
 
 const App = () => (
   <div id="app">
-    <Router>
-      <Home path="/" />
-    </Router>
+    <h1>Preact Responsive Image Demo</h1>
+    <ErrorBoundary>
+      <ResponsiveImage
+        src="example.png"
+        alt="Example responsive image"
+        sizes="(max-width: 600px) 300px, (max-width: 1200px) 600px, 1200px"
+      />
+    </ErrorBoundary>
   </div>
 );
 
 export default App;
 ```
 
-### 8. src/index.js
+### 7. src/index.js
 
 ```javascript
 import { h, render } from 'preact';
 import App from './components/App/App';
 import './styles/global.css';
 
-render(<App />, document.getElementById('app'));
+render(<App />, document.body);
 ```
 
-### 9. .env.example
+### 8. src/index.html
 
-```
-API_URL=https://api.example.com
-```
-
-### 10. .eslintrc.js
-
-```javascript
-module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
-    jest: true,
-  },
-  extends: [
-    'eslint:recommended',
-    'plugin:preact/recommended',
-  ],
-  parserOptions: {
-    ecmaVersion: 12,
-    sourceType: 'module',
-  },
-  rules: {
-    // Add custom rules here
-  },
-};
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preact Responsive Image App</title>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+</html>
 ```
 
-### 11. .prettierrc
+### 9. src/styles/global.css
 
-```json
-{
-  "singleQuote": true,
-  "trailingComma": "es5",
-  "tabWidth": 2,
-  "semi": true,
-  "printWidth": 100
+```css
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 ```
 
-### 12. jest.config.js
+### 10. vercel.json
 
-```javascript
-module.exports = {
-  testEnvironment: 'jsdom',
-  transform: {
-    '^.+\\.js$': 'babel-jest',
-  },
-  moduleNameMapper: {
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-  },
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
-};
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
+    }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    {
+      "src": "/assets/images/(.*)",
+      "dest": "/assets/images/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
 ```
 
-### 13. scripts/optimize-images.js
+### 11. .gitignore
 
-```javascript
-const sharp = require('sharp');
-const fs = require('fs').promises;
-const path = require('path');
+```
+node_modules/
+dist/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.vercel
+```
 
-const inputDir = path.join(__dirname, '../public/images');
-const outputDir = path.join(__dirname, '../src/assets/images');
+## Setup Instructions
 
-async function optimizeImages() {
-  try {
-    const files = await fs.readdir(inputDir);
-    
-    for (const file of files) {
-      if (path.extname(file).toLowerCase() === '.png') {
-        const inputPath = path.join(inputDir, file);
-        const image = sharp(inputPath);
-        const metadata = await image.metadata();
-        
-        // Generate WebP
-        await image
-          .webp({ quality: 80 })
-          .toFile(path.join(outputDir, 'webp', `${path.basename(file, '.png')}.webp`));
-        
-        // Generate PNG or JPEG based on alpha channel
-        if (metadata.channels === 4) {
-          await image
-            .png({ quality: 100 })
-            .toFile(path.join(outputDir, 'png', file));
-        } else {
-          await image
-            .jpeg({ quality: 85 })
-            .toFile(path.join(outputDir, 'jpeg
+1. Create a new directory for your project and navigate into it:
+   ```
+   mkdir preact-responsive-image-app && cd preact-responsive-image-app
+   ```
+
+2. Create the file structure as shown above.
+
+3. Copy the contents of each file into the respective files in your project.
+
+4. Initialize a new Git repository:
+   ```
+   git init
+   ```
+
+5. Install the dependencies:
+   ```
+   npm install
+   ```
+
+6. Place your source PNG images in the `public/images/` directory. For testing, you can use any PNG image and name it `example.png`.
+
+7. Start the development server:
+   ```
+   npm start
+   ```
+
+8. To build the project for production:
+   ```
+   npm run build
+   ```
+
+## Deployment
+
+### Vercel
+
+1. Install the Vercel CLI:
+   ```
+   npm i -g vercel
+   ```
+
+2. Deploy to Vercel:
+   ```
+   vercel
+   ```
+
+3. Follow the prompts to link your project to your Vercel account.
+
+## Usage
+
+After setting up the project, you can use the `ResponsiveImage` component in your Preact application like this:
+
+```jsx
+import { ResponsiveImage } from './components/ResponsiveImage/ResponsiveImage';
+
+const MyComponent = () => (
+  <ResponsiveImage
+    src="example.png"
+    alt="An example image"
+    sizes="(max-width: 600px) 300px, (max-width: 1200px) 600px, 1200px"
+  />
+);
+```
+
+This will display your image with proper responsive behavior and format fallbacks.
+</antArtifact
